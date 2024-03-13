@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CardsTest {
     @Test
-    public void cardTest() {
+    public void deckTest() {
         final SetDeck setDeck = new SetDeck();
         setDeck.print();
         System.out.println("---------- Shuffling ---------------");

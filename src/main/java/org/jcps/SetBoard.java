@@ -47,7 +47,7 @@ class SetBoard extends Container {
         this.computerSet = new BoardSlot[3];
         final GridBagConstraints gridBagConstraints = new GridBagConstraints();
         this.setLayout(new GridBagLayout());
-        gridBagConstraints.fill = 1;
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
         gridBagConstraints.gridwidth = 1;
         gridBagConstraints.gridheight = 1;
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
@@ -215,7 +215,7 @@ class SetBoard extends Container {
             return;
         }
         if (this.selections(0).completes(this.selections(1), this.selections(2))) {
-            System.out.println("CORRECT!");
+            //System.out.println("CORRECT!");
             SetGame.lbStatus.setText("CORRECT!");
             for (int i = 0; i < this.grid.size(); ++i) {
                 if (this.contains(this.selections, this.grid(i).card)) {
@@ -228,7 +228,7 @@ class SetBoard extends Container {
             this.deal();
             return;
         }
-        System.out.println("INCORRECT!");
+        //System.out.println("INCORRECT!");
         SetGame.lbStatus.setText("INCORRECT!");
         this.selectNone();
     }

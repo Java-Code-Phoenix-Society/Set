@@ -26,6 +26,7 @@ public class SetGame extends Panel implements ActionListener, JavaAppletAdapter 
         sets.paramMap.put("bgColor", "#830000");
         sets.init();
         frame = new JFrame("Set");
+        frame.setBackground(SetGame.background);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.add(sets);
         frame.pack();
