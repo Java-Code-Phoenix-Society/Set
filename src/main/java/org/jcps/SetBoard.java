@@ -2,8 +2,7 @@ package org.jcps;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
-import java.util.Vector;
+import java.util.*;
 
 class SetBoard extends Container {
     public static int CARD_MIN;
@@ -16,6 +15,7 @@ class SetBoard extends Container {
         SetBoard.CARD_INCREMENT = 3;
     }
 
+    final private ArrayList<TriggerListener> listeners = new ArrayList<>();
     private final Vector<BoardSlot> grid;
     private final BoardSlot[] extras;
     SetDeck deck;
@@ -86,13 +86,13 @@ class SetBoard extends Container {
         }
         if (!this.containsSet()) {
             if (this.grid.size() >= SetBoard.CARD_MAX) {
-                new MessageBox(new JFrame(), "Please deal again.", "No set in " +
-                        this.grid.size() + " cards!", 170, MessageBox.BTN_CLOSE);
-                System.out.println("Maximum number of cards on board-- no set in " + this.grid.size() +
-                        " cards!  Please deal again.");
+                new MessageBox(new JFrame(), "Please deal again.",
+                        "Maximum number of cards on board-- no set in " + this.grid.size() +
+                                " cards!  Please deal again.", 170, MessageBox.BTN_CLOSE);
+                //System.out.println("Maximum number of cards on board-- no set in " + this.grid.size() + " cards!  Please deal again.");
             } else {
-                new MessageBox(new JFrame(),"Game Over","Game over.  Please deal again.",200);
-                System.out.println("Game over.  Please deal again.");
+                new MessageBox(new JFrame(), "Game Over", "Game over.  Please deal again.", 200);
+                //System.out.println("Game over.  Please deal again.");
             }
         }
         this.computerSet = this.findSet();
@@ -251,6 +251,14 @@ class SetBoard extends Container {
             this.consolidate();
             this.crop(this.grid.size() - SetBoard.CARD_INCREMENT);
         }
+        fireEvent();
+    }
+
+    private void fireEvent() {
+        EventObject event = new EventObject(this);
+        for (TriggerListener listener : listeners) {
+            listener.onEventOccurred(event);
+        }
     }
 
     public void revealSet() {
@@ -273,4 +281,22 @@ class SetBoard extends Container {
 
     }
 
+    /**
+     * Adds an event listener to the list of listeners.
+     *
+     * @param listener The TriggerListener to be added.
+     */
+    public void addEventListener(TriggerListener listener) {
+        listeners.add(listener);
+    }
+
+    public interface TriggerListener extends EventListener {
+
+        /**
+         * Invoked upon the occurrence of a trigger event.
+         *
+         * @param event The TriggerEvent associated with the event in question.
+         */
+        void onEventOccurred(EventObject event);
+    }
 }

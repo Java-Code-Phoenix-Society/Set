@@ -6,7 +6,7 @@
 
     <groupId>org.jcps</groupId>
     <artifactId>set</artifactId>
-    <version>1.0</version>
+    <version>1.0.1</version>
 
     <pluginRepositories>
         <pluginRepository>
@@ -36,6 +36,8 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
+                    <finalName>${project.artifactId}-${project.version}-full</finalName>
+                    <appendAssemblyId>false</appendAssemblyId>
                 </configuration>
                 <executions>
                     <execution>

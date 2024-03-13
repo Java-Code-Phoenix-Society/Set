@@ -4,24 +4,23 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.EventObject;
 
-public class SetGame extends Panel implements ActionListener, JavaAppletAdapter {
+public class SetGame extends JPanel implements ActionListener, JavaAppletAdapter, SetBoard.TriggerListener {
     public static final String IMAGE_PATH = "images/";
     public static Color background;
+    public static JLabel lbStatus;
     static JFrame frame;
 
     static {
         SetGame.background = Color.black;
     }
 
-    public static JLabel lbStatus;
     SetBoard board;
     JButton reDeal;
     JButton cheat;
 
     public static void main(final String[] array) {
-        //final SetDeck setDeck = new SetDeck();
-        System.out.println("---------- Dealing ---------------");
         SetGame sets = new SetGame();
         sets.paramMap.put("bgColor", "#830000");
         sets.init();
@@ -34,13 +33,13 @@ public class SetGame extends Panel implements ActionListener, JavaAppletAdapter 
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.requestFocus();
-
     }
 
     public void init() {
         this.loadParameters();
         this.setBackground(SetGame.background);
         this.board = new SetBoard(new SetDeck());
+        this.board.addEventListener(this);
         this.reDeal = new JButton("Deal Again");
         this.cheat = new JButton("Reveal Set");
         lbStatus = new JLabel("Welcome to Set");
@@ -53,7 +52,7 @@ public class SetGame extends Panel implements ActionListener, JavaAppletAdapter 
         lbStatus.setBorder(BorderFactory.createLineBorder(Color.WHITE, 5));
         final Panel comp = new Panel();
         final Panel comp2 = new Panel();
-        final Panel panel = new Panel();
+        final JPanel panel = new JPanel();
         panel.setSize(10, this.getSize().height);
         panel.setBackground(SetGame.background);
         comp.setBackground(SetGame.background);
@@ -125,6 +124,8 @@ public class SetGame extends Panel implements ActionListener, JavaAppletAdapter 
         if (actionEvent.getSource() == this.reDeal) {
             this.board.deck.shuffle();
             this.board.reDeal();
+            lbStatus.setText("Welcome to Set");
+            frame.repaint();
             return;
         }
         if (actionEvent.getSource() == this.cheat) {
@@ -137,5 +138,11 @@ public class SetGame extends Panel implements ActionListener, JavaAppletAdapter 
     }
 
     public void paint(final Graphics graphics) {
+    }
+
+    @Override
+    public void onEventOccurred(EventObject event) {
+        frame.revalidate();
+        frame.repaint();
     }
 }
