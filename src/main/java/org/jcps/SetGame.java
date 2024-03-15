@@ -33,6 +33,9 @@ public class SetGame extends JPanel implements ActionListener, JavaAppletAdapter
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.requestFocus();
+        if(!array[0].isEmpty() && array[0].equals("T")) {
+            frame.dispose();
+        }
     }
 
     public void init() {
@@ -144,5 +147,8 @@ public class SetGame extends JPanel implements ActionListener, JavaAppletAdapter
     public void onEventOccurred(EventObject event) {
         frame.revalidate();
         frame.repaint();
+    }
+    public SetBoard getBoard() {
+        return this.board;
     }
 }

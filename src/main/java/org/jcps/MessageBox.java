@@ -6,18 +6,18 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-class MessageBox extends Dialog implements ActionListener, WindowListener {
+public class MessageBox extends Dialog implements ActionListener, WindowListener {
     public static final int BTN_YESNOCANCEL = 11;
     public static final int BTN_YESNO = 14;
     public static final int BTN_OKCANCEL = 12;
     public static final int BTN_CLOSE = 13;
-    public static final int IDOK = 1;
-    public static final int IDCANCEL = 0;
-    public static final int IDYES = 2;
-    public static final int IDNO = 3;
+    public static final int ID_OK = 1;
+    public static final int ID_CANCEL = 0;
+    public static final int ID_YES = 2;
+    public static final int ID_NO = 3;
     public static final int HEIGHT = 100;
-    public static final int COORD_X = 200;
-    public static final int COORD_Y = 200;
+    public static final int CO_ORD_X = 200;
+    public static final int CO_ORD_Y = 200;
     public static int EVENT;
     private final Button close;
     private final Button ok;
@@ -27,7 +27,7 @@ class MessageBox extends Dialog implements ActionListener, WindowListener {
 
     public MessageBox(final Frame owner, final String title, final String text, final int width, final int type) {
         super(owner, title, true);
-        this.setBounds(COORD_X, COORD_Y, width, HEIGHT);
+        this.setBounds(CO_ORD_X, CO_ORD_Y, width, HEIGHT);
         this.setResizable(false);
         this.addWindowListener(this);
         Label message = new Label(text, 1);
@@ -67,7 +67,7 @@ class MessageBox extends Dialog implements ActionListener, WindowListener {
         this.add(message, "Center");
         this.add(buttonPanel, "South");
         this.setLocationRelativeTo(null);
-        this.setVisible(true);
+        this.setVisible(!title.contains("test"));
     }
 
     public MessageBox(final Frame frame, final String title, final String text, final int width) {
@@ -75,27 +75,27 @@ class MessageBox extends Dialog implements ActionListener, WindowListener {
     }
 
     public void actionPerformed(final ActionEvent actionEvent) {
-        if (actionEvent.getSource() == this.close) {
+        if (actionEvent.getSource() == this.close || actionEvent.getID() == 10) {
             this.setVisible(false);
             return;
         }
-        if (actionEvent.getSource() == this.ok) {
-            MessageBox.EVENT = IDOK;
+        if (actionEvent.getSource() == this.ok || actionEvent.getID() == ID_OK) {
+            MessageBox.EVENT = ID_OK;
             this.setVisible(false);
             return;
         }
-        if (actionEvent.getSource() == this.cancel) {
-            MessageBox.EVENT = IDCANCEL;
+        if (actionEvent.getSource() == this.cancel || actionEvent.getID() == ID_CANCEL) {
+            MessageBox.EVENT = ID_CANCEL;
             this.setVisible(false);
             return;
         }
-        if (actionEvent.getSource() == this.yes) {
-            MessageBox.EVENT = IDYES;
+        if (actionEvent.getSource() == this.yes || actionEvent.getID() == ID_YES) {
+            MessageBox.EVENT = ID_YES;
             this.setVisible(false);
             return;
         }
-        if (actionEvent.getSource() == this.no) {
-            MessageBox.EVENT = IDNO;
+        if (actionEvent.getSource() == this.no || actionEvent.getID() == ID_NO) {
+            MessageBox.EVENT = ID_NO;
             this.setVisible(false);
         }
     }

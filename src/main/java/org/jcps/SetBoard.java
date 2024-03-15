@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 
-class SetBoard extends Container {
+public class SetBoard extends Container {
     public static int CARD_MIN;
     public static int CARD_MAX;
     public static int CARD_INCREMENT;
@@ -34,10 +34,10 @@ class SetBoard extends Container {
         this(4, 3, setDeck, deckSize);
     }
 
-    public SetBoard(final int n, final int n2, final SetDeck deck, final int deckSize) {
+    public SetBoard(final int width, final int height, final SetDeck deck, final int deckSize) {
         this.selections = new Vector<>();
         this.deck = deck;
-        if (deckSize >= n * n2) {
+        if (deckSize >= width * height) {
             SetBoard.CARD_MAX = deckSize;
         }
         if (CARD_MAX < CARD_MIN) {
@@ -54,13 +54,13 @@ class SetBoard extends Container {
         this.grid = new Vector<>();
         for (int i = 0; i < SetBoard.CARD_MIN; ++i) {
             this.grid.addElement(new BoardSlot(this));
-            gridBagConstraints.gridx = i / n2;
+            gridBagConstraints.gridx = i / height;
             gridBagConstraints.gridy = i % 3;
             this.add(this.grid(i), gridBagConstraints);
         }
         for (int j = 0; j < this.extras.length; ++j) {
-            gridBagConstraints.gridx = (SetBoard.CARD_MIN + j) / n2;
-            gridBagConstraints.gridy = (SetBoard.CARD_MIN + j) % n2;
+            gridBagConstraints.gridx = (SetBoard.CARD_MIN + j) / height;
+            gridBagConstraints.gridy = (SetBoard.CARD_MIN + j) % height;
             this.add(this.extras[j] = new BoardSlot(this), gridBagConstraints);
         }
     }

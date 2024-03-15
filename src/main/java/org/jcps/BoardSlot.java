@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-class BoardSlot extends Canvas implements MouseListener {
+public class BoardSlot extends Canvas implements MouseListener {
     private static final int ARC_WIDTH = 10;
     private static final Dimension DIM;
 
