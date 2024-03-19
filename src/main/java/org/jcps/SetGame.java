@@ -4,12 +4,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.util.EventObject;
 
 public class SetGame extends JPanel implements ActionListener, JavaAppletAdapter, SetBoard.TriggerListener {
     public static final String IMAGE_PATH = "images/";
     public static Color background;
     public static JLabel lbStatus;
+    public static int scaleCardsFactor = 1;
     static JFrame frame;
 
     static {
@@ -20,7 +22,7 @@ public class SetGame extends JPanel implements ActionListener, JavaAppletAdapter
     JButton reDeal;
     JButton cheat;
 
-    public static void main(final String[] array) {
+    public static void main(final String[] args) {
         SetGame sets = new SetGame();
         sets.paramMap.put("bgColor", "#830000");
         sets.init();
@@ -33,12 +35,44 @@ public class SetGame extends JPanel implements ActionListener, JavaAppletAdapter
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.requestFocus();
-        if(!array[0].isEmpty() && array[0].equals("T")) {
-            frame.dispose();
+        try {
+            if (!args[0].isEmpty() && args[0].equals("T")) {
+                frame.dispose();
+            }
+        } catch (Exception e) {
+            System.out.println("Playing the game");
         }
     }
 
+
+    /**
+     * Method to scale an image by a given factor
+     *
+     * @param originalImage Image to scale
+     * @param scaleFactor   The factor to scale by
+     * @return The scaled Image
+     */
+    public static Image scaleImage(BufferedImage originalImage, double scaleFactor) {
+        if (originalImage != null) {
+            // Calculate the new dimensions for the scaled image
+            int newWidth = (int) (originalImage.getWidth() * scaleFactor);
+            int newHeight = (int) (originalImage.getHeight() * scaleFactor);
+
+            // Create a larger image with the new dimensions
+            BufferedImage scaledImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+
+            // Draw the original image onto the larger canvas with scaling
+            Graphics2D g2d = scaledImage.createGraphics();
+            g2d.drawImage(originalImage, 0, 0, newWidth, newHeight, null);
+            g2d.dispose(); // Dispose of the graphics context
+
+            return scaledImage;
+        }
+        return null;
+    }
+
     public void init() {
+        this.removeAll();
         this.loadParameters();
         this.setBackground(SetGame.background);
         this.board = new SetBoard(new SetDeck());
@@ -78,12 +112,57 @@ public class SetGame extends JPanel implements ActionListener, JavaAppletAdapter
         this.board.deal();
     }
 
+    /**
+     * Initializes the scaling of the Set game board.
+     * If the scaling factor is not equal to 1, scales the card images by the factor.
+     * Otherwise, loads the original images without scaling.
+     */
+    public void scaleInit() {
+        // Remove the current board component from the container
+        this.remove(this.board);
+
+        // Create a status label indicating "Welcome to Set"
+        lbStatus = new JLabel("Welcome to Set");
+
+        // Check if the scaling factor is not equal to 1
+        if (scaleCardsFactor != 1) {
+            // Iterate over the deck of cards and scale each card image by the scaling factor
+            for (int i = 0; i < this.board.deck.deck.length; ++i) {
+                this.board.deck.deck[i].image = scaleImage((BufferedImage) this.board.deck.deck[i].image, scaleCardsFactor);
+            }
+        } else {
+            // If the scaling factor is 1, load the original images without scaling
+            loadImages();
+        }
+
+        // Create a new SetBoard instance with the original deck of cards
+        this.board = new SetBoard(this.board.deck);
+
+        // Add the new SetBoard component to the container at the center position
+        this.add(this.board, "Center");
+
+        // Shuffle the deck of cards
+        this.board.deck.shuffle();
+
+        // Deal the cards on the board
+        this.board.deal();
+    }
+
+    /**
+     * Loads parameters for the Set game.
+     * Retrieves the value of the "bgColor" parameter and sets the background color accordingly.
+     */
     public void loadParameters() {
+        // Retrieve the value of the "bgColor" parameter from the applet's parameters
         final String parameter = this.getParameter("bgColor");
+
+        // Check if the parameter value is not null
         if (parameter != null) {
             try {
+                // Attempt to decode the parameter value into a Color object and set it as the background color
                 SetGame.background = Color.decode(parameter);
             } catch (final NumberFormatException ignored) {
+                // If the parameter value cannot be decoded as a color, ignore the exception
             }
         }
     }
@@ -96,25 +175,26 @@ public class SetGame extends JPanel implements ActionListener, JavaAppletAdapter
         } else if (str.lastIndexOf("/") != str.length() - 1) {
             str = str + "/";
         }
-        System.out.println(str);
+        System.out.println("Loading images from: " + str);
         for (int i = 0; i < this.board.deck.deck.length; ++i) {
             StringBuilder string = new StringBuilder();
             for (int j = 0; j < this.board.deck.deck[i].values.length; ++j) {
                 string.append(this.board.deck.deck[i].values[j] + 1);
             }
-            mediaTracker.addImage(this.board.deck.deck[i].image = this.getImage(
-                    this.getDocumentBase(), str + string + ".gif"), i);
+            mediaTracker.addImage(
+                    this.board.deck.deck[i].image =
+                            scaleImage(
+                                    (BufferedImage) this.getImage(this.getDocumentBase(),
+                                            str + string + ".gif"), scaleCardsFactor), i
+            );
             try {
-                this.showStatus("Loading cards: " + i + "/" + this.board.deck.deck.length +
-                        " (" + str + string + ".gif" + ")");
-                System.out.println("Loading cards: " + i + "/" + this.board.deck.deck.length +
+                this.showStatus("Loading cards: " + (i + 1) + "/" + this.board.deck.deck.length +
                         " (" + str + string + ".gif" + ")");
                 mediaTracker.waitForID(i);
             } catch (final InterruptedException ignored) {
             }
             if (mediaTracker.isErrorID(i)) {
                 this.showStatus("Error loading " + str + string + ".gif");
-                System.out.println("Error loading " + str + string + ".gif");
             }
         }
     }
@@ -125,9 +205,19 @@ public class SetGame extends JPanel implements ActionListener, JavaAppletAdapter
 
     public void actionPerformed(final ActionEvent actionEvent) {
         if (actionEvent.getSource() == this.reDeal) {
+            if (actionEvent.getModifiers() == 17) {
+                if (scaleCardsFactor == 1) {
+                    scaleCardsFactor = 2; // If the scaling factor is 1, change it to 2
+                } else {
+                    scaleCardsFactor = 1; // If the scaling factor is 2, change it back to 1
+                }
+                scaleInit();
+                frame.pack();
+            }
             this.board.deck.shuffle();
             this.board.reDeal();
             lbStatus.setText("Welcome to Set");
+
             frame.repaint();
             return;
         }
@@ -148,6 +238,7 @@ public class SetGame extends JPanel implements ActionListener, JavaAppletAdapter
         frame.revalidate();
         frame.repaint();
     }
+
     public SetBoard getBoard() {
         return this.board;
     }

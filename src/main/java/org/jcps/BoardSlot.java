@@ -6,12 +6,6 @@ import java.awt.event.MouseListener;
 
 public class BoardSlot extends Canvas implements MouseListener {
     private static final int ARC_WIDTH = 10;
-    private static final Dimension DIM;
-
-    static {
-        DIM = new Dimension(123, 80);
-    }
-
     SetBoard board;
     SetCard card;
     boolean selected;
@@ -25,15 +19,19 @@ public class BoardSlot extends Canvas implements MouseListener {
     }
 
     public BoardSlot(final SetCard setCard, final SetBoard setBoard) {
-        this(BoardSlot.DIM, setCard, setBoard);
+        this(getSlotDimensions(), setCard, setBoard);
     }
 
     public BoardSlot(final SetBoard setBoard) {
-        this(BoardSlot.DIM, null, setBoard);
+        this(getSlotDimensions(), null, setBoard);
     }
 
     public BoardSlot(final Dimension dimension, final SetBoard setBoard) {
         this(dimension, null, setBoard);
+    }
+
+    private static Dimension getSlotDimensions() {
+        return new Dimension(123 * SetGame.scaleCardsFactor, 80 * SetGame.scaleCardsFactor);
     }
 
     public void paint(final Graphics graphics) {
@@ -50,7 +48,7 @@ public class BoardSlot extends Canvas implements MouseListener {
             graphics.fillRect(0, 0, this.getSize().width, this.getSize().height);
         } else {
             graphics.setColor(Color.white);
-            graphics.fillRoundRect(0, 0, this.getSize().width, this.getSize().height,ARC_WIDTH, 10);
+            graphics.fillRoundRect(0, 0, this.getSize().width, this.getSize().height, ARC_WIDTH, 10);
             graphics.drawImage(this.card.image, 5, 5, this.getSize().width - 5,
                     this.getSize().height - 5, 0, 0, this.card.image.getWidth(this),
                     this.card.image.getHeight(this), Color.white, this);

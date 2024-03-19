@@ -290,6 +290,10 @@ public class SetBoard extends Container {
         listeners.add(listener);
     }
 
+    public SetDeck getDeck() {
+        return deck;
+    }
+
     public interface TriggerListener extends EventListener {
 
         /**

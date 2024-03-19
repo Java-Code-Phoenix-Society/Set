@@ -97,4 +97,27 @@ public class CardsTest {
         assertTrue(board.containsSet());
         SetGame.main(new String[]{"T"});
     }
+
+    @Test
+    public void setBoardTest() {
+        SetBoard t = new SetBoard();
+        SetBoard c = new SetBoard(t.getDeck());
+        t.deal();
+        assertNotEquals(c,t);
+    }
+    @Test
+    public void setBoardTest2() {
+        SetBoard t = new SetBoard(new SetDeck(),78);
+        t.reDeal();
+        assertNotEquals(78,t.getDeck().remaining());
+    }
+
+    @Test
+    public void setBoardSlotTest() {
+        SetBoard t = new SetBoard(new SetDeck(),78);
+        t.reDeal();
+        BoardSlot s = new BoardSlot(t);
+        t.grid(0).changeCard(t.getDeck().deal());
+        assertNotEquals(t.grid(0).card(),s.card());
+    }
 }
