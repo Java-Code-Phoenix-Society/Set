@@ -146,6 +146,7 @@ public class SetBoard extends Container {
             this.grid.removeElementAt(i);
         }
         this.repaint();
+        fireEvent();
     }
 
     public boolean containsSet() {

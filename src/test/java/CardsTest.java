@@ -48,7 +48,7 @@ public class CardsTest {
         System.out.println("----- Drain deck -----");
         setDeck.deal(81);
         System.out.println("----- Try to draw a card -----");
-        setDeck.deal();
+        setDeck.deal(1);
         assertEquals(0, setDeck.remaining());
     }
 
@@ -62,30 +62,6 @@ public class CardsTest {
         assertEquals(81, setDeck.remaining());
     }
 
-    @Test
-    public void messageboxTest() {
-        System.out.println("MessageBox Tests...");
-        MessageBox messageBox = new MessageBox(null, "test", "text for test", 200);
-        messageBox.actionPerformed(new ActionEvent(this,10,"string"));
-        assertEquals("test",messageBox.getTitle());
-        messageBox.dispose();
-        messageBox = new MessageBox(null, "test", "text for test", 200, MessageBox.BTN_OKCANCEL);
-        messageBox.actionPerformed(new ActionEvent(this,MessageBox.ID_OK,"string"));
-        assertEquals("test",messageBox.getTitle());
-        messageBox.dispose();
-        messageBox = new MessageBox(null, "test", "text for test", 200, MessageBox.BTN_YESNO);
-        messageBox.actionPerformed(new ActionEvent(this,MessageBox.ID_YES, "string"));
-        assertEquals("test",messageBox.getTitle());
-        messageBox.dispose();
-        messageBox = new MessageBox(null, "test", "text for test", 200, MessageBox.BTN_YESNOCANCEL);
-        messageBox.actionPerformed(new ActionEvent(this,MessageBox.ID_NO,"string"));
-        assertEquals("test",messageBox.getTitle());
-        messageBox.dispose();
-        messageBox = new MessageBox(null, "test", "text for test", 200, MessageBox.BTN_OKCANCEL);
-        messageBox.actionPerformed(new ActionEvent(this,MessageBox.ID_CANCEL,"string"));
-        assertEquals("test",messageBox.getTitle());
-        messageBox.dispose();
-    }
     @Test
     public void setGameTest() {
         SetGame setGame = new SetGame();
@@ -103,21 +79,56 @@ public class CardsTest {
         SetBoard t = new SetBoard();
         SetBoard c = new SetBoard(t.getDeck());
         t.deal();
-        assertNotEquals(c,t);
+        assertNotEquals(c, t);
     }
+
     @Test
     public void setBoardTest2() {
-        SetBoard t = new SetBoard(new SetDeck(),78);
+        SetBoard t = new SetBoard(new SetDeck(), 78);
         t.reDeal();
-        assertNotEquals(78,t.getDeck().remaining());
+        assertNotEquals(78, t.getDeck().remaining());
     }
 
     @Test
     public void setBoardSlotTest() {
-        SetBoard t = new SetBoard(new SetDeck(),78);
+        SetBoard t = new SetBoard(new SetDeck(), 78);
         t.reDeal();
         BoardSlot s = new BoardSlot(t);
         t.grid(0).changeCard(t.getDeck().deal());
-        assertNotEquals(t.grid(0).card(),s.card());
+        assertNotEquals(t.grid(0).card(), s.card());
+    }
+
+    @Test
+    public void messageboxTestC() {
+        System.out.println("--- Simple MessageBox Test ---");
+        MessageBox messageBox = new MessageBox(null, "test", "text for test", 200);
+        messageBox.actionPerformed(new ActionEvent(this, MessageBox.BTN_CLOSE, "test"));
+        assertEquals("test", messageBox.getTitle());
+        messageBox.dispose();
+    }
+
+    @Test
+    public void messageboxCoverageTest() {
+        System.out.println("MessageBox Coverage Tests...");
+        MessageBox messageBox = new MessageBox(null, "test", "text for test", 200);
+        messageBox.actionPerformed(new ActionEvent(this, 10, "string"));
+        assertEquals("test", messageBox.getTitle());
+        messageBox.dispose();
+        messageBox = new MessageBox(null, "test", "text for test", 200, MessageBox.BTN_OKCANCEL);
+        messageBox.actionPerformed(new ActionEvent(this, MessageBox.ID_OK, "string"));
+        assertEquals("test", messageBox.getTitle());
+        messageBox.dispose();
+        messageBox = new MessageBox(null, "test", "text for test", 200, MessageBox.BTN_YESNO);
+        messageBox.actionPerformed(new ActionEvent(this, MessageBox.ID_YES, "string"));
+        assertEquals("test", messageBox.getTitle());
+        messageBox.dispose();
+        messageBox = new MessageBox(null, "test", "text for test", 200, MessageBox.BTN_YESNOCANCEL);
+        messageBox.actionPerformed(new ActionEvent(this, MessageBox.ID_NO, "string"));
+        assertEquals("test", messageBox.getTitle());
+        messageBox.dispose();
+        messageBox = new MessageBox(null, "test", "text for test", 200, MessageBox.BTN_OKCANCEL);
+        messageBox.actionPerformed(new ActionEvent(this, MessageBox.ID_CANCEL, "string"));
+        assertEquals("test", messageBox.getTitle());
+        messageBox.dispose();
     }
 }

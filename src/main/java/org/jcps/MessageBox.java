@@ -1,5 +1,6 @@
 package org.jcps;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,11 +20,11 @@ public class MessageBox extends Dialog implements ActionListener, WindowListener
     public static final int CO_ORD_X = 200;
     public static final int CO_ORD_Y = 200;
     public static int EVENT;
-    private final Button close;
-    private final Button ok;
-    private final Button cancel;
-    private final Button yes;
-    private final Button no;
+    final JButton close;
+    final JButton ok;
+    final JButton cancel;
+    final JButton yes;
+    final JButton no;
 
     public MessageBox(final Frame owner, final String title, final String text, final int width, final int type) {
         super(owner, title, true);
@@ -31,11 +32,16 @@ public class MessageBox extends Dialog implements ActionListener, WindowListener
         this.setResizable(false);
         this.addWindowListener(this);
         Label message = new Label(text, 1);
-        this.close = new Button("Close");
-        this.ok = new Button("Ok");
-        this.cancel = new Button("Cancel");
-        this.yes = new Button("Yes");
-        this.no = new Button("No");
+        this.close = new JButton("Close");
+        this.close.setName("close");
+        this.ok = new JButton("Ok");
+        this.ok.setName("ok");
+        this.cancel = new JButton("Cancel");
+        this.cancel.setName("cancel");
+        this.yes = new JButton("Yes");
+        this.yes.setName("yes");
+        this.no = new JButton("No");
+        this.no.setName("no");
         this.close.addActionListener(this);
         this.ok.addActionListener(this);
         this.cancel.addActionListener(this);

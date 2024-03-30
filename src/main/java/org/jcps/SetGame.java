@@ -12,12 +12,12 @@ public class SetGame extends JPanel implements ActionListener, JavaAppletAdapter
     public static Color background;
     public static JLabel lbStatus;
     public static int scaleCardsFactor = 1;
-    static JFrame frame;
 
     static {
         SetGame.background = Color.black;
     }
 
+    public JFrame frame;
     SetBoard board;
     JButton reDeal;
     JButton cheat;
@@ -26,18 +26,18 @@ public class SetGame extends JPanel implements ActionListener, JavaAppletAdapter
         SetGame sets = new SetGame();
         sets.paramMap.put("bgColor", "#830000");
         sets.init();
-        frame = new JFrame("Set");
-        frame.setBackground(SetGame.background);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(sets);
-        frame.pack();
-        frame.setVisible(true);
-        frame.setResizable(false);
-        frame.setLocationRelativeTo(null);
-        frame.requestFocus();
+        sets.frame = new JFrame("Set");
+        sets.frame.setBackground(SetGame.background);
+        sets.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        sets.frame.add(sets);
+        sets.frame.pack();
+        sets.frame.setVisible(true);
+        sets.frame.setResizable(false);
+        sets.frame.setLocationRelativeTo(null);
+        sets.frame.requestFocus();
         try {
             if (!args[0].isEmpty() && args[0].equals("T")) {
-                frame.dispose();
+                sets.frame.dispose();
             }
         } catch (Exception e) {
             System.out.println("Playing the game");
@@ -79,7 +79,10 @@ public class SetGame extends JPanel implements ActionListener, JavaAppletAdapter
         this.board.addEventListener(this);
         this.reDeal = new JButton("Deal Again");
         this.cheat = new JButton("Reveal Set");
+        this.reDeal.setName("reDeal");
+        this.cheat.setName("cheat");
         lbStatus = new JLabel("Welcome to Set");
+        lbStatus.setName("lbStatus");
         lbStatus.setHorizontalAlignment(SwingConstants.CENTER);
         lbStatus.setVerticalAlignment(SwingConstants.CENTER);
         lbStatus.setFont(new Font("Arial", Font.BOLD, 16));
@@ -235,8 +238,10 @@ public class SetGame extends JPanel implements ActionListener, JavaAppletAdapter
 
     @Override
     public void onEventOccurred(EventObject event) {
-        frame.revalidate();
-        frame.repaint();
+        if (frame != null) {
+            frame.revalidate();
+            frame.repaint();
+        }
     }
 
     public SetBoard getBoard() {

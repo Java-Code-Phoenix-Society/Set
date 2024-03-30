@@ -3,6 +3,7 @@ package org.jcps;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Objects;
 
 public class BoardSlot extends Canvas implements MouseListener {
     private static final int ARC_WIDTH = 10;
@@ -32,6 +33,14 @@ public class BoardSlot extends Canvas implements MouseListener {
 
     private static Dimension getSlotDimensions() {
         return new Dimension(123 * SetGame.scaleCardsFactor, 80 * SetGame.scaleCardsFactor);
+    }
+
+    public static String valuesToName(int[] array) {
+        StringBuilder sb = new StringBuilder();
+        for (int j : array)
+            sb.append(j);
+
+        return sb.toString();
     }
 
     public void paint(final Graphics graphics) {
@@ -80,6 +89,9 @@ public class BoardSlot extends Canvas implements MouseListener {
 
     public void changeCard(final SetCard card) {
         this.card = card;
+        if (Objects.nonNull(card)) {
+            this.setName(valuesToName(card.values));
+        }
         this.repaint();
     }
 
