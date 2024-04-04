@@ -2,7 +2,7 @@ import org.assertj.swing.annotation.GUITest;
 import org.assertj.swing.edt.FailOnThreadViolationRepaintManager;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.DialogFixture;
-import org.jcps.MessageBox;
+import dev.jcps.MessageBox;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;

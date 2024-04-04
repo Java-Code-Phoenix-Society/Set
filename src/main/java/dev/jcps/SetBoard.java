@@ -1,4 +1,4 @@
-package org.jcps;
+package dev.jcps;
 
 import javax.swing.*;
 import java.awt.*;

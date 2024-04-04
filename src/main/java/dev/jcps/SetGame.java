@@ -1,4 +1,4 @@
-package org.jcps;
+package dev.jcps;
 
 import javax.swing.*;
 import java.awt.*;
@@ -202,13 +202,9 @@ public class SetGame extends JPanel implements ActionListener, JavaAppletAdapter
         }
     }
 
-    private void showStatus(String s) {
-        System.out.println(s);
-    }
-
     public void actionPerformed(final ActionEvent actionEvent) {
         if (actionEvent.getSource() == this.reDeal) {
-            if (actionEvent.getModifiers() == 17) {
+            if ((actionEvent.getModifiers() & ActionEvent.SHIFT_MASK) != 0) {
                 if (scaleCardsFactor == 1) {
                     scaleCardsFactor = 2; // If the scaling factor is 1, change it to 2
                 } else {

@@ -1,4 +1,4 @@
-import org.jcps.*;
+import dev.jcps.*;
 import org.junit.jupiter.api.Test;
 
 import java.awt.event.ActionEvent;

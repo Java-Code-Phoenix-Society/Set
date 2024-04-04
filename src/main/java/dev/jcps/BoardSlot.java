@@ -1,4 +1,4 @@
-package org.jcps;
+package dev.jcps;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;

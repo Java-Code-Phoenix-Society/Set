@@ -1,8 +1,7 @@
-package org.jcps;
+package dev.jcps;
 
 public class SetDeck {
     public static final int DEFAULT_NUM = 81;
-    public boolean circular;
     SetCard[] deck;
     private int card_index;
 
