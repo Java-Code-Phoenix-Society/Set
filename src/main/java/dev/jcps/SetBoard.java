@@ -16,10 +16,10 @@ public class SetBoard extends Container {
     }
 
     final private ArrayList<TriggerListener> listeners = new ArrayList<>();
-    private final Vector<BoardSlot> grid;
+    private final ArrayList<BoardSlot> grid;
     private final BoardSlot[] extras;
     SetDeck deck;
-    Vector<SetCard> selections;
+    ArrayList<SetCard> selections;
     private BoardSlot[] computerSet;
 
     public SetBoard() {
@@ -35,7 +35,7 @@ public class SetBoard extends Container {
     }
 
     public SetBoard(final int width, final int height, final SetDeck deck, final int deckSize) {
-        this.selections = new Vector<>();
+        this.selections = new ArrayList<>();
         this.deck = deck;
         if (deckSize >= width * height) {
             SetBoard.CARD_MAX = deckSize;
@@ -51,9 +51,9 @@ public class SetBoard extends Container {
         gridBagConstraints.gridwidth = 1;
         gridBagConstraints.gridheight = 1;
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
-        this.grid = new Vector<>();
+        this.grid = new ArrayList<>();
         for (int i = 0; i < SetBoard.CARD_MIN; ++i) {
-            this.grid.addElement(new BoardSlot(this));
+            this.grid.add(new BoardSlot(this));
             gridBagConstraints.gridx = i / height;
             gridBagConstraints.gridy = i % 3;
             this.add(this.grid(i), gridBagConstraints);
@@ -66,7 +66,7 @@ public class SetBoard extends Container {
     }
 
     public BoardSlot grid(final int index) {
-        return this.grid.elementAt(index);
+        return this.grid.get(index);
     }
 
     public void deal() {
@@ -80,7 +80,7 @@ public class SetBoard extends Container {
             int end = size - CARD_MIN + CARD_INCREMENT;
 
             for (int n3 = size - CARD_MIN; n3 < end; n3++) {
-                this.grid.addElement(this.extras[n3]);
+                this.grid.add(this.extras[n3]);
                 this.deal(CARD_MIN + n3);
             }
         }
@@ -143,7 +143,7 @@ public class SetBoard extends Container {
     public void crop(final int n) {
         for (int i = this.grid.size() - 1; i >= n; --i) {
             this.grid(i).changeCard(null);
-            this.grid.removeElementAt(i);
+            this.grid.remove(i);
         }
         this.repaint();
         fireEvent();
@@ -190,7 +190,7 @@ public class SetBoard extends Container {
     }
 
     public void selectNone() {
-        this.selections.removeAllElements();
+        this.selections.clear();
         for (int i = 0; i < this.grid.size(); ++i) {
             if (this.grid(i).selected) {
                 this.grid(i).select();
@@ -199,15 +199,15 @@ public class SetBoard extends Container {
     }
 
     public SetCard selections(final int index) {
-        return this.selections.elementAt(index);
+        return this.selections.get(index);
     }
 
     public void addSelection(final SetCard obj) {
-        this.selections.addElement(obj);
+        this.selections.add(obj);
     }
 
     public void removeSelection(final SetCard obj) {
-        this.selections.removeElement(obj);
+        this.selections.remove(obj);
     }
 
     public void testSelections() {
@@ -234,9 +234,9 @@ public class SetBoard extends Container {
         this.selectNone();
     }
 
-    public boolean contains(final Vector<SetCard> vector, final Object o) {
-        for (int i = 0; i < vector.size(); ++i) {
-            if (vector.elementAt(i) != null && vector.elementAt(i) == o) {
+    public boolean contains(final ArrayList<SetCard> vector, final Object o) {
+        for (SetCard setCard : vector) {
+            if (setCard != null && setCard == o) {
                 return true;
             }
         }
