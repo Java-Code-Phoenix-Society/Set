@@ -1,5 +1,7 @@
 package dev.jcps;
 
+import ru.krlvm.swingdpi.SwingDPI;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -23,6 +25,9 @@ public class SetGame extends JPanel implements ActionListener, JavaAppletAdapter
     JButton cheat;
 
     public static void main(final String[] args) {
+        if (System.getProperty("os.name").contains("mac")){
+            SwingDPI.applyScalingAutomatically();
+        }
         SetGame sets = new SetGame();
         sets.paramMap.put("bgColor", "#830000");
         sets.init();

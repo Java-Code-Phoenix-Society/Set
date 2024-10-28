@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Set" type="Application" factoryName="Application">
-    <option name="MAIN_CLASS_NAME" value="org.jcps.SetGame" />
+    <option name="MAIN_CLASS_NAME" value="dev.jcps.SetGame" />
     <module name="set" />
     <option name="WORKING_DIRECTORY" value="$MODULE_DIR$/src/main/resources" />
     <method v="2">
